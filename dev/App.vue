@@ -8,406 +8,420 @@
     <button @click="changePage">Change Page</button>
     <input type="text" v-model="searchTerm">
     <vue-good-table
-      ref="my-table"
-      @on-column-filter="onColumnFilter"
-      @on-select-all="onSelectAll"
-      @on-sort-change="onSortChange"
-      @on-page-change="onPageChange"
-      @on-per-page-change="onPerPageChange"
-      @on-search="onSearch"
-      @on-selected-rows-change="onSelectChanged"
-      :columns="columns"
-      :rows="rows"
-      :pagination-options="paginationOptions"
-      :select-options="{
-        enabled: true,
-        selectOnCheckboxOnly: false,
-        disableSelectInfo: true,
-      }"
-      theme="nocturnal"
-      styleClass="vgt-table bordered"
-      :sort-options="{
-        enabled: true,
-        initialSortBy: [{field: 'name', type: 'asc'}],
-      }"
-      :search-options="{
-        enabled: true,
-        skipDiacritics: true,
-        externalQuery: searchTerm,
+            ref="my-table"
+            @on-column-filter="onColumnFilter"
+            @on-select-all="onSelectAll"
+            @on-sort-change="onSortChange"
+            @on-page-change="onPageChange"
+            @on-per-page-change="onPerPageChange"
+            @on-search="onSearch"
+            @on-selected-rows-change="onSelectChanged"
+            :columns="columns"
+            :rows="rows"
+            theme="black-rhino"
+            :pagination-options="paginationOptions"
+              :select-options="{
+          enabled: true,
+          selectOnCheckboxOnly: true,
+        }"
+              styleClass="vgt-table bordered"
+              :sort-options="{
+          enabled: true,
+          initialSortBy: [{field: 'name', type: 'asc'}],
+        }"
+              :search-options="{
+          enabled: true,
+          skipDiacritics: true,
+          externalQuery: searchTerm,
       }">
     </vue-good-table>
-    <h3>Remote Table</h3>
-    <remote-table/>
-    <h3>Grouped Table</h3>
-    <!-- <grouped-table></grouped-table> -->
+
   </div>
 </template>
 
 <script>
-import GroupedTable from './grouped-table.vue';
-import RemoteTable from './remote-table.vue';
 
-export default {
-  name: 'test',
-  data() {
-    return {
-      currentPage: 1,
-      selectedIds: [],
-      rowStyleClass: 'red',
-      searchTerm: '',
-      paginationOptions: {
-        mode: 'pages',
-        enabled: true,
-        perPage: 5,
-        perPageDropdown: [50, 100, 200, 300, 500, 1000],
+
+  export default {
+    name: 'test',
+    data() {
+      return {
+        filterDropdownOptions: [],
+        currentPage: 1,
+        selectedIds: [],
+        rowStyleClass: 'red',
+        searchTerm: '',
+        paginationOptions: {
+          mode: 'pages',
+          enabled: true,
+          perPage: 5,
+          perPageDropdown: [50, 100, 200, 300, 500, 1000],
+        },
+        columns: [
+          {
+            label: 'Name',
+            field: 'name',
+            width: '200px',
+            filterOptions: {
+              enabled: true,
+              filterMultiselectDropdownItems: [
+                'Angel',
+                'Dan',
+                'Steve'
+              ],
+            },
+          },
+          {
+            label: 'Age',
+            field: obj => obj.age,
+            type: 'number',
+            filterOptions: {
+              enabled: true,
+              // filterValue: 20,
+            },
+          },
+          {
+            filterOptions: {
+              enabled: true,
+            },
+            label: 'Created On',
+            field: 'createdAt',
+          },
+          {
+            label: 'Percent',
+            field: 'score',
+            type: 'percentage',
+          },
+          {
+            label: 'func',
+            field: this.funcValue,
+            type: 'number',
+          },
+          {
+            label: 'Valid',
+            field: 'bool',
+            type: 'boolean',
+            filterOptions: {
+              enabled: true,
+              filterDropdownItems: [
+                true,
+                false,
+              ],
+            },
+          },
+          {
+            label: 'Multiselect',
+            field: 'multiselect',
+            filterOptions: {
+              enabled: true,
+              filterMultiselectDropdownItems: [
+                'hello',
+                'oh no',
+              ],
+            },
+          },
+          {
+            label: 'Average age',
+            field: 'average',
+            type: 'number',
+            filterOptions: {
+              enabled: true,
+              filterMultiselectDropdownItems: [
+                1,
+                1.5,
+                2
+              ],
+            },
+          },
+        ],
+        rows: [
+          // { id:1, name:"John", age: 20, createdAt: '2018-02-18T00:00:43-05:00',score: 0.03343 },
+          {
+            id: 2,
+            name: 'Jane',
+            age: 24,
+            createdAt: '2011-10-31',
+            score: 0.03343,
+            bool: true,
+            multiselect: 'hello',
+            average: 1
+          },
+          {
+            id: 3,
+            name: 'Angel',
+            age: 16,
+            createdAt: '2011-10-30',
+            score: 0.03343,
+            bool: true,
+            multiselect: 'oh no',
+            average: null
+          },
+          {
+            id: 4,
+            name: 'Chris',
+            age: 55,
+            createdAt: '2011-10-11',
+            score: 0.03343,
+            bool: false,
+            multiselect: null
+          },
+          {
+            id: 5,
+            name: 'Dan',
+            age: 40,
+            createdAt: null,
+            score: 0.03343,
+            bool: null,
+            multiselect: 'hello world',
+            average: 2
+          },
+          {
+            id: 5,
+            name: '193.23',
+            age: 20,
+            createdAt: null,
+            score: 0.03343,
+            bool: null,
+            multiselect: 'hello',
+            average: 3
+          },
+          {
+            id: 5,
+            name: 'Dan',
+            age: 34,
+            createdAt: null,
+            score: 0.03343,
+            bool: null,
+            multiselect: 'hello',
+            average: 2
+          },
+          {
+            id: 6,
+            name: 'John',
+            age: 20,
+            createdAt: '2011-10-31',
+            score: 0.03343,
+            bool: true,
+            multiselect: 'hello',
+            average: 1.5
+          },
+          {
+            id: 7,
+            name: 'Ángel',
+            age: 20,
+            createdAt: '2013-09-21',
+            score: null,
+            bool: 'false',
+            multiselect: 'hello',
+            average: 1
+          },
+          {
+            id: 8,
+            name: 'Susan',
+            age: 16,
+            createdAt: '2013-10-31',
+            score: 0.03343,
+            bool: true,
+            multiselect: 'hello',
+            average: 1
+          },
+        ],
+      };
+    },
+    methods: {
+      changePage() {
+        this.currentPage += 1;
+        this.$set(this.paginationOptions, 'setCurrentPage', this.currentPage);
       },
-      columns: [
-        {
-          label: 'Name',
-          field: 'name',
-          width: '200px',
-          filterOptions: {
-            enabled: true,
-            placeholder: 'All',
-            // filterDropdownItems: ['Chris', 'Dan', 'Susan'],
-            // filterValue: 'Chris',
-          },
-        },
-        {
-          label: 'Age',
-          field: 'age',
-          type: 'number',
-          filterOptions: {
-            enabled: true,
-            filterDropdownItems: [
-              {
-                value: 24,
-                text: '24',
-              },
-              {
-                value: 16,
-                text: '16',
-              },
-            ],
-          },
-        },
-        {
-          filterOptions: {
-            enabled: true,
-          },
-          sortable: false,
-          label: 'Created On',
-          field: 'createdAt',
-          type: 'date',
-          dateInputFormat: 'yyyy-MM-dd',
-          dateOutputFormat: 'PPPP',
-        },
-        {
-          label: 'Percent',
-          field: 'score',
-          type: 'percentage',
-        },
-        {
-          label: 'func',
-          field: this.funcValue,
-          type: 'number',
-        },
-        {
-          label: 'Valid',
-          field: 'bool',
-          type: 'boolean',
-          filterOptions: {
-            enabled: true,
-            filterDropdownItems: [
-              true,
-              false,
-            ],
-          },
-        },
-        {
-          label: 'Exact',
-          field: 'exact',
-          filterOptions: {
-            enabled: true,
-            filterDropdownItems: [
-              'match',
-              'rematch',
-            ],
-          },
-        },
-      ],
-      rows: [
-        // { id:1, name:"John", age: 20, createdAt: '2018-02-18T00:00:43-05:00',score: 0.03343 },
-        {
-          id: 2,
-          name: 'Jane',
-          age: 24,
-          createdAt: '2011-10-31',
-          score: 0.03343,
-          bool: true,
-          exact: 'match',
-        },
-        {
-          id: 3,
-          name: 'Angel',
-          age: 16,
-          createdAt: '2011-10-30',
-          score: 0.03343,
-          bool: true,
-          exact: 'match',
-        },
-        {
-          id: 4,
-          name: 'Chris',
-          age: 55,
-          createdAt: '2011-10-11',
-          score: 0.03343,
-          bool: false,
-          exact: null,
-        },
-        {
-          id: 5,
-          name: 'Dan',
-          age: 40,
-          createdAt: '',
-          score: 0.03343,
-          bool: null,
-          exact: 'rematch',
-        },
-        {
-          id: 5,
-          name: '193.23',
+      funcValue(row) {
+        return row.age + 5;
+      },
+      tdClassFunc(row) {
+        if (row.age > 50) {
+          return 'red';
+        }
+        return 'green';
+      },
+      getRowStyle() {
+        return '';
+      },
+      hideColumn() {
+        this.$set(this.columns[0], 'hidden', true);
+      },
+      resetTable() {
+        this.$refs['my-table'].reset();
+      },
+      onSelectAll(params) {
+        console.log(params);
+        // this.unselectAll();
+        // if (params.selected) {
+        //   for (let i = 0; i < params.selectedRows.length; i++) {
+        //     // lets get the original index of the row
+        //     const originalIndex = params.selectedRows[i].originalIndex;
+        //     // now lets set that row's selected value to be true
+        //     this.$set(this.rows[originalIndex], 'selected', true);
+        //   }
+        // }
+      },
+      unselectAll() {
+        for (let i = 0; i < this.rows.length; i++) {
+          this.$set(this.rows[i], 'selected', false);
+        }
+      },
+      toggleSelectRow(params) {
+        console.log(params.row, params.pageIndex, params.selected);
+        // if (this.rows[row.originalIndex].selected) {
+        //   this.$set(this.rows[row.originalIndex], 'selected', false);
+        // } else {
+        //   this.$set(this.rows[row.originalIndex], 'selected', true);
+        // }
+      },
+      selectCell(params) {
+        console.log('select cell called');
+        console.log(params);
+      },
+      searchedRow(params) {
+        console.log(params);
+      },
+      setFilter() {
+        // this.columns[0].filterOptions.filterValue = 'John';
+        this.$set(this.columns[0].filterOptions, 'filterValue', 'Chris');
+        // const column1 = JSON.parse(JSON.stringify(this.columns[0]));
+        // column1.filterOptions.filterValue = 'John';
+        // this.$set(this.columns, 0, column1);
+        // const column2 = JSON.parse(JSON.stringify(this.columns[1]));
+        // column2.filterOptions.filterValue = 20;
+        // this.$set(this.columns, 1, column2);
+        // this.$set(this.columns[1], 'filterOptions', { enabled: true, filterValue: 20 });
+        // this.$set(this.columns[0], 'filterOptions', {
+        //   enabled: true,
+        //   placeholder: 'All',
+        //   filterDropdownItems: ['Chris', 'Dan', 'Susan', 'John'],
+        //   filterValue: 'John',
+        // });
+      },
+      autofilter(type) {
+        if (type === 'name') {
+          this.columns[0].filterOptions.filterValue = 'John';
+        }
+        if (type === 'age') {
+          this.columns[1].filterOptions.filterValue = '>30';
+        }
+        if (type === 'reset') {
+          this.columns[0].filterOptions.filterValue = '';
+          this.columns[1].filterOptions.filterValue = '';
+          // this.columns[1].filterOptions.filterValue = null;
+        }
+      },
+
+      filterAge(data, filterString) {
+        if ((filterString === '>30') && (parseInt(data, 10) > 30)) {
+          return true;
+        }
+        if ((filterString === '<=30') && (parseInt(data, 10) <= 30)) {
+          return true;
+        }
+        return false;
+      },
+
+      onClick() {
+        console.log('clicked');
+        this.rowStyleClass = 'green';
+      },
+      addRow() {
+        this.rows.push({
+          name: `Chris ${Math.random()}`,
           age: 20,
-          createdAt: null,
-          score: 0.03343,
-          bool: null,
-          exact: 'rematch',
-        },
-        {
-          id: 5,
-          name: 'Dan',
-          age: 34,
-          createdAt: null,
-          score: 0.03343,
-          bool: null,
-          exact: null,
-        },
-        {
-          id: 6,
-          name: 'John',
-          age: 20,
-          createdAt: '2011-10-31',
-          score: 0.03343,
-          bool: true,
-          exact: 'match',
-        },
-        {
-          id: 7,
-          name: 'Ángel',
-          age: 20,
-          createdAt: '2013-09-21',
-          score: null,
-          bool: 'false',
-          exact: null,
-        },
-        {
-          id: 8,
-          name: 'Susan',
-          age: 16,
-          createdAt: '2013-10-31',
-          score: 0.03343,
-          bool: true,
-          exact: 'rematch',
-        },
-      ],
-    };
-  },
-  methods: {
-    changePage() {
-      this.currentPage += 1;
-      this.$set(this.paginationOptions, 'setCurrentPage', this.currentPage);
-    },
-    funcValue(row) {
-      return row.age + 5;
-    },
-    tdClassFunc(row) {
-      if (row.age > 50) {
-        return 'red';
-      }
-      return 'green';
-    },
-    getRowStyle() {
-      return '';
-    },
-    hideColumn() {
-      this.$set(this.columns[0], 'hidden', true);
-    },
-    resetTable() {
-      this.$refs['my-table'].reset();
-    },
-    onSelectAll(params) {
-      console.log(params);
-      // this.unselectAll();
-      // if (params.selected) {
-      //   for (let i = 0; i < params.selectedRows.length; i++) {
-      //     // lets get the original index of the row
-      //     const originalIndex = params.selectedRows[i].originalIndex;
-      //     // now lets set that row's selected value to be true
-      //     this.$set(this.rows[originalIndex], 'selected', true);
-      //   }
-      // }
-    },
-    unselectAll() {
-      for (let i = 0; i < this.rows.length; i++) {
-        this.$set(this.rows[i], 'selected', false);
-      }
-    },
-    toggleSelectRow(params) {
-      console.log(params.row, params.pageIndex, params.selected);
-      // if (this.rows[row.originalIndex].selected) {
-      //   this.$set(this.rows[row.originalIndex], 'selected', false);
-      // } else {
-      //   this.$set(this.rows[row.originalIndex], 'selected', true);
-      // }
-    },
-    selectCell(params) {
-      console.log('select cell called');
-      console.log(params);
-    },
-    searchedRow(params) {
-      console.log(params);
-    },
-    setFilter() {
-      // this.columns[0].filterOptions.filterValue = 'John';
-      this.$set(this.columns[0].filterOptions, 'filterValue', 'Chris');
-      // const column1 = JSON.parse(JSON.stringify(this.columns[0]));
-      // column1.filterOptions.filterValue = 'John';
-      // this.$set(this.columns, 0, column1);
-      // const column2 = JSON.parse(JSON.stringify(this.columns[1]));
-      // column2.filterOptions.filterValue = 20;
-      // this.$set(this.columns, 1, column2);
-      // this.$set(this.columns[1], 'filterOptions', { enabled: true, filterValue: 20 });
-      // this.$set(this.columns[0], 'filterOptions', {
-      //   enabled: true,
-      //   placeholder: 'All',
-      //   filterDropdownItems: ['Chris', 'Dan', 'Susan', 'John'],
-      //   filterValue: 'John',
-      // });
-    },
-    autofilter(type) {
-      if (type === 'name') {
-        this.columns[0].filterOptions.filterValue = 'John';
-      }
-      if (type === 'age') {
-        this.columns[1].filterOptions.filterValue = '>30';
-      }
-      if (type === 'reset') {
-        this.columns[0].filterOptions.filterValue = '';
-        this.columns[1].filterOptions.filterValue = '';
-        // this.columns[1].filterOptions.filterValue = null;
-      }
-    },
+        });
+      },
+      editRow() {
+        this.$set(this.rows[12], 'age', 300);
+      },
+      sortFn(x, y, col) {
+        if (x < y) {
+          return -1;
+        }
+        if (x > y) {
+          return 1;
+        }
+        return 0;
+      },
+      formatAge(value) {
+        return `lala${value}lala`;
+      },
+      addFilter() {
+        this.$set(this.columns[2], 'filterValue', 'Jane');
+        console.log(this.columns);
+      },
 
-    filterAge(data, filterString) {
-      if ((filterString === '>30') && (parseInt(data, 10) > 30)) {
-        return true;
-      }
-      if ((filterString === '<=30') && (parseInt(data, 10) <= 30)) {
-        return true;
-      }
-      return false;
-    },
+      // events
+      // ===================================================
+      onPerPageChange(evt) {
+        // { currentPage: 1, currentPerPage: 10, total: 5 }
+        console.log('per-page-changed:');
+        console.log(evt);
+      },
 
-    onClick() {
-      console.log('clicked');
-      this.rowStyleClass = 'green';
-    },
-    addRow() {
-      this.rows.push({
-        name: `Chris ${Math.random()}`,
-        age: 20,
-      });
-    },
-    editRow() {
-      this.$set(this.rows[12], 'age', 300);
-    },
-    sortFn(x, y, col) {
-      if (x < y) {
-        return -1;
-      }
-      if (x > y) {
-        return 1;
-      }
-      return 0;
-    },
-    formatAge(value) {
-      return `lala${value}lala`;
-    },
-    addFilter() {
-      this.$set(this.columns[2], 'filterValue', 'Jane');
-      console.log(this.columns);
-    },
+      onPageChange(evt) {
+        // { currentPage: 1, currentPerPage: 10, total: 5 }
+        console.log('page-changed:');
+        console.log(evt);
+      },
 
-    // events
-    // ===================================================
-    onPerPageChange(evt) {
-      // { currentPage: 1, currentPerPage: 10, total: 5 }
-      console.log('per-page-changed:');
-      console.log(evt);
-    },
+      onColumnFilter(params) {
+        // { currentPage: 1, currentPerPage: 10, total: 5 }
+        console.log('on-column-filters:');
+        console.log(params);
+      },
 
-    onPageChange(evt) {
-      // { currentPage: 1, currentPerPage: 10, total: 5 }
-      console.log('page-changed:');
-      console.log(evt);
-    },
+      onSearch(params) {
+        // console.log('on-search:');
+        // console.log(params);
+      },
 
-    onColumnFilter(params) {
-      // { currentPage: 1, currentPerPage: 10, total: 5 }
-      console.log('on-column-filters:');
-      console.log(params);
-    },
+      onSortChange(params) {
+        // console.log('on-sort-change:');
+        // console.log(params);
+        const [nameFilter] = params;
+        // console.log(typeof nameFilter.field === 'function');
+      },
 
-    onSearch(params) {
-      console.log('on-search:');
-      console.log(params);
-    },
+      onRowClick(params) {
+        console.log('on-row-click');
+        console.log(params);
+      },
 
-    onSortChange(params) {
-      console.log('on-sort-change:');
-      console.log(params);
-      const [nameFilter] = params;
-      console.log(typeof nameFilter.field === 'function');
-    },
 
-    onRowClick(params) {
-      console.log('on-row-click');
-      console.log(params);
+      onSelectChanged(params) {
+        console.log(params);
+        const selectedIds = params.selectedRows.reduce((acc, row) => {
+          acc.push(row.id);
+          return acc;
+        }, []);
+        console.log(params.selectedRows);
+        console.log(selectedIds);
+        this.selectedIds = selectedIds;
+      },
     },
-
-    onSelectChanged(params) {
-      console.log(params);
-      const selectedIds = params.selectedRows.reduce((acc, row) => {
-        acc.push(row.id);
-        return acc;
-      }, []);
-      console.log(params.selectedRows);
-      console.log(selectedIds);
-      this.selectedIds = selectedIds;
-    },
-  },
-  mounted() {
-    // axios.get('https://jsonplaceholder.typicode.com/posts')
-    //   .then((response) => {
-    //     console.log(response);
-    //     this.rows = response.data;
-    //   });
-  },
-  components: {
-    'grouped-table': GroupedTable,
-    RemoteTable,
-  },
-};
+    // created(){
+    //   let temp_array = {};
+    //
+    //   this.columns.forEach(function (column) {
+    //     this.rows.forEach(function (row) {
+    //
+    //       if (!temp_array[column.field] && !this.isFunction(column.field))
+    //         temp_array[column.field] = [];
+    //
+    //       if(temp_array[column.field] && !temp_array[column.field].includes(row[column.field]) && row[column.field])
+    //         temp_array[column.field].push(row[column.field]);
+    //
+    //     }.bind(this));
+    //   }.bind(this));
+    //
+    //   this.filterDropdownOptions = temp_array;
+    //
+    // }
+  };
 </script>
 
 <style lang="css">

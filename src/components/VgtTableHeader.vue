@@ -29,7 +29,8 @@
     :selectable="selectable"
     :columns="columns"
     :mode="mode"
-    :typed-columns="typedColumns">
+    :typed-columns="typedColumns"
+    :filterDropdownOptions="filterDropdownOptions">
   </tr>
 </thead>
 </template>
@@ -42,6 +43,9 @@ import * as SortUtils from './utils/sort.js';
 export default {
   name: 'VgtTableHeader',
   props: {
+    filterDropdownOptions:{
+      type: Object,
+    },
     lineNumbers: {
       default: false,
       type: Boolean,
