@@ -19,7 +19,7 @@
     "docs:build": "vuepress build vp-docs",
     "test": "echo \"No test specified\""
   },
-  "repository": "github:xaksis/vue-good-table",
+  "repository": "github:bencolla/vue-good-table",
   "keywords": [
     "vue",
     "vuejs",
@@ -27,8 +27,8 @@
     "datatable"
   ],
   "author": {
-    "name": "xaksis",
-    "email": "shay@crayonbits.com"
+    "name": "bencolla",
+    "email": "benjamincolla@hotmail.com"
   },
   "license": "MIT",
   "poi": {

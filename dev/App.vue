@@ -64,11 +64,7 @@
             width: '200px',
             filterOptions: {
               enabled: true,
-              filterMultiselectDropdownItems: [
-                'Angel',
-                'Dan',
-                'Steve'
-              ],
+              filterMultiselectDropdownItems: [],
             },
           },
           {
