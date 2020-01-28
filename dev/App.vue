@@ -46,7 +46,6 @@
     name: 'test',
     data() {
       return {
-        filterDropdownOptions: [],
         currentPage: 1,
         selectedIds: [],
         rowStyleClass: 'red',
@@ -64,22 +63,18 @@
             width: '200px',
             filterOptions: {
               enabled: true,
-              filterMultiselectDropdownItems: [],
+              filterMultiselectDropdownItems: ['Dan', 'Chris','Angel'],
             },
           },
           {
             label: 'Age',
-            field: obj => obj.age,
-            type: 'number',
+            field: 'age',
             filterOptions: {
               enabled: true,
-              // filterValue: 20,
+              filterMultiselectDropdownItems: [],
             },
           },
           {
-            filterOptions: {
-              enabled: true,
-            },
             label: 'Created On',
             field: 'createdAt',
           },
@@ -96,14 +91,7 @@
           {
             label: 'Valid',
             field: 'bool',
-            type: 'boolean',
-            filterOptions: {
-              enabled: true,
-              filterDropdownItems: [
-                true,
-                false,
-              ],
-            },
+            type: 'boolean'
           },
           {
             label: 'Multiselect',

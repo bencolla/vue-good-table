@@ -73,6 +73,8 @@ allows creating a dropdown for filtering multiple items as opposed to an input
 filterMultiselectDropdownItems: ['Blue', 'Red', 'Yellow']
 ```
 
+Leave filterMultiselectDropdownItems empty (filterMultiselectDropdownItems: []) to auto-populate the dropdown menu with unique elements fetched from the rows, this option is not supported while using remote table
+
 ## filterFn
 
 type `Function`

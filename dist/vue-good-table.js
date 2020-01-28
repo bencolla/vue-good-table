@@ -8115,7 +8115,12 @@
         return this.isDropdown(column) && _typeof(column.filterOptions.filterDropdownItems[0]) !== 'object';
       },
       isMultiselectDropdown: function isMultiselectDropdown(column) {
-        return this.isFilterable(column) && column.filterOptions.filterMultiselectDropdownItems;
+        if (this.isFilterable(column) && column.filterOptions.filterMultiselectDropdownItems && column.filterOptions.filterMultiselectDropdownItems.length) {
+          return 'manual';
+        }
+
+        if (this.isFilterable(column) && column.filterOptions.filterMultiselectDropdownItems && !column.filterOptions.filterMultiselectDropdownItems.length) return 'auto'; // return this.isFilterable(column)
+        //         && column.filterOptions.filterMultiselectDropdownItems;
       },
       // get column's defined placeholder or default one
       getPlaceholder: function getPlaceholder(column) {
@@ -8242,7 +8247,21 @@
             "value": option.value
           }
         }, [_vm._v(_vm._s(option.text))]);
-      })], 2) : _vm._e(), _vm._v(" "), _vm.isMultiselectDropdown(column) ? _c('v-select', {
+      })], 2) : _vm._e(), _vm._v(" "), _vm.isMultiselectDropdown(column) === 'manual' ? _c('v-select', {
+        ref: 'vgt-multiselect' + column.label + index,
+        refInFor: true,
+        attrs: {
+          "options": column.filterOptions.filterMultiselectDropdownItems,
+          "loading": column.filterOptions.loading,
+          "placeholder": _vm.getPlaceholder(column),
+          "multiple": ""
+        },
+        on: {
+          "input": function input(selectedItems) {
+            return _vm.updateFiltersOnKeyup(column, selectedItems);
+          }
+        }
+      }) : _vm._e(), _vm._v(" "), _vm.isMultiselectDropdown(column) === 'auto' ? _c('v-select', {
         ref: 'vgt-multiselect' + column.label + index,
         refInFor: true,
         attrs: {
@@ -8266,7 +8285,7 @@
   var __vue_inject_styles__$3 = undefined;
   /* scoped */
 
-  var __vue_scope_id__$3 = "data-v-064bedc1";
+  var __vue_scope_id__$3 = "data-v-e143fe82";
   /* module identifier */
 
   var __vue_module_identifier__$3 = undefined;
@@ -13552,6 +13571,7 @@
       return {
         // loading state for remote mode
         tableLoading: false,
+        filterDropdownOptions: [],
         // text options
         nextText: 'Next',
         prevText: 'Prev',
@@ -13971,10 +13991,13 @@
     created: function created() {
       var temp_array = {};
       this.columns.forEach(function (column) {
-        this.rows.forEach(function (row) {
-          if (!temp_array[column.field] && !this.isFunction(column.field)) temp_array[column.field] = [];
-          if (temp_array[column.field] && !temp_array[column.field].includes(row[column.field]) && row[column.field]) temp_array[column.field].push(row[column.field]);
-        }.bind(this));
+        //exclude manual populated columns
+        if (column.filterOptions && column.filterOptions.enabled && column.filterOptions.filterMultiselectDropdownItems && !column.filterOptions.filterMultiselectDropdownItems.length) {
+          this.rows.forEach(function (row) {
+            if (!temp_array[column.field] && !this.isFunction(column.field)) temp_array[column.field] = [];
+            if (temp_array[column.field] && !temp_array[column.field].includes(row[column.field].toString()) && row[column.field]) temp_array[column.field].push(row[column.field].toString());
+          }.bind(this));
+        }
       }.bind(this));
       this.filterDropdownOptions = temp_array;
     },

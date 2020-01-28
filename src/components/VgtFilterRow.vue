@@ -42,14 +42,24 @@
                   :value="option.value">{{ option.text }}</option>
         </select>
 
-        <!---->
-        <v-select v-if="isMultiselectDropdown(column)"
-                  :options="filterDropdownOptions[column.field]"
+        <!--Manually populated-->
+        <v-select v-if="isMultiselectDropdown(column) === 'manual'"
+                  :options="column.filterOptions.filterMultiselectDropdownItems"
                   :loading="column.filterOptions.loading"
                   :placeholder="getPlaceholder(column)"
                   multiple
                   @input="(selectedItems) => updateFiltersOnKeyup(column, selectedItems)"
                   :ref="'vgt-multiselect' + column.label + index"
+        />
+        <!--Auto populated by the rows, does not work in remote table-->
+        <v-select
+          v-if="isMultiselectDropdown(column) === 'auto'"
+          :options="filterDropdownOptions[column.field]"
+          :loading="column.filterOptions.loading"
+          :placeholder="getPlaceholder(column)"
+          multiple
+          @input="(selectedItems) => updateFiltersOnKeyup(column, selectedItems)"
+          :ref="'vgt-multiselect' + column.label + index"
         />
 
       </div>
@@ -86,6 +96,7 @@
         timer: null,
       };
     },
+
     computed: {
       // to create a filter row, we need to
       // make sure that there is atleast 1 column
@@ -143,8 +154,14 @@
       },
 
       isMultiselectDropdown(column) {
-        return this.isFilterable(column)
-                && column.filterOptions.filterMultiselectDropdownItems;
+        if(this.isFilterable(column) && column.filterOptions.filterMultiselectDropdownItems && column.filterOptions.filterMultiselectDropdownItems.length){
+          return 'manual';
+        }
+        if(this.isFilterable(column) && column.filterOptions.filterMultiselectDropdownItems && !column.filterOptions.filterMultiselectDropdownItems.length)
+          return 'auto'
+
+        // return this.isFilterable(column)
+        //         && column.filterOptions.filterMultiselectDropdownItems;
       },
 
       // get column's defined placeholder or default one

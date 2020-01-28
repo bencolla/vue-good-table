@@ -406,7 +406,7 @@
     data: () => ({
       // loading state for remote mode
       tableLoading: false,
-
+      filterDropdownOptions: [],
       // text options
       nextText: 'Next',
       prevText: 'Prev',
@@ -888,15 +888,18 @@
       let temp_array = {};
 
       this.columns.forEach(function (column) {
-        this.rows.forEach(function (row) {
+        //exclude manual populated columns
+        if(column.filterOptions && column.filterOptions.enabled && column.filterOptions.filterMultiselectDropdownItems && !column.filterOptions.filterMultiselectDropdownItems.length){
+          this.rows.forEach(function (row) {
 
           if (!temp_array[column.field] && !this.isFunction(column.field))
             temp_array[column.field] = [];
 
-          if(temp_array[column.field] && !temp_array[column.field].includes(row[column.field]) && row[column.field])
-            temp_array[column.field].push(row[column.field]);
+          if(temp_array[column.field] && !temp_array[column.field].includes(row[column.field].toString()) && row[column.field])
+            temp_array[column.field].push(row[column.field].toString());
 
         }.bind(this));
+        }
       }.bind(this));
 
       this.filterDropdownOptions = temp_array;
