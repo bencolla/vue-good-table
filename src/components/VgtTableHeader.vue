@@ -43,9 +43,7 @@ import * as SortUtils from './utils/sort.js';
 export default {
   name: 'VgtTableHeader',
   props: {
-    filterDropdownOptions:{
-      type: Object,
-    },
+    'filterDropdownOptions':{},
     lineNumbers: {
       default: false,
       type: Boolean,

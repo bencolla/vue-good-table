@@ -8355,9 +8355,7 @@ var secondarySort = function (sortArray, column) {
 var script$4 = {
   name: 'VgtTableHeader',
   props: {
-    filterDropdownOptions: {
-      type: Object
-    },
+    'filterDropdownOptions': {},
     lineNumbers: {
       "default": false,
       type: Boolean
@@ -8609,7 +8607,7 @@ var __vue_staticRenderFns__$4 = [];
 var __vue_inject_styles__$4 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = "data-v-03174ab8";
+var __vue_scope_id__$4 = "data-v-72b2ecf5";
 /* module identifier */
 
 var __vue_module_identifier__$4 = undefined;
@@ -13989,7 +13987,12 @@ var script$6 = {
       if (column.filterOptions && column.filterOptions.enabled && column.filterOptions.filterMultiselectDropdownItems && !column.filterOptions.filterMultiselectDropdownItems.length) {
         this.rows.forEach(function (row) {
           if (!temp_array[column.field] && !this.isFunction(column.field)) temp_array[column.field] = [];
-          if (temp_array[column.field] && !temp_array[column.field].includes(row[column.field].toString()) && row[column.field]) temp_array[column.field].push(row[column.field].toString());
+
+          if (row[column.field] && temp_array[column.field]) {
+            if (!temp_array[column.field].includes(row[column.field].toString())) {
+              temp_array[column.field].push(row[column.field].toString());
+            }
+          }
         }.bind(this));
       }
     }.bind(this));

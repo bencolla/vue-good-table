@@ -895,8 +895,12 @@
           if (!temp_array[column.field] && !this.isFunction(column.field))
             temp_array[column.field] = [];
 
-          if(temp_array[column.field] && !temp_array[column.field].includes(row[column.field].toString()) && row[column.field])
-            temp_array[column.field].push(row[column.field].toString());
+          if(row[column.field] && temp_array[column.field]){
+            if(!temp_array[column.field].includes(row[column.field].toString())){
+              temp_array[column.field].push(row[column.field].toString());
+            }
+          }
+
 
         }.bind(this));
         }
